@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="VContainerSettings" load_steps=2 format=3 uid="uid://douwls285sxtg"]
+
+[ext_resource type="Script" path="res://addons/VContainer/Unity/VContainerSettings.cs" id="1_1i1pn"]
+
+[resource]
+script = ExtResource("1_1i1pn")
+EnableDiagnostics = false
+DisableScriptModifier = false
