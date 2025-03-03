@@ -63,7 +63,8 @@ namespace VContainer.Internal
             var hashCode = RuntimeHelpers.GetHashCode(type);
             var buckets = table[hashCode & indexFor];
 
-            if (buckets == null) goto ERROR;
+            if (buckets == null)
+                goto ERROR;
 
             if (buckets[0].Type == type)
             {
@@ -79,7 +80,7 @@ namespace VContainer.Internal
             }
 
             ERROR:
-            throw new KeyNotFoundException("Type was not dound, Type: " + type.FullName);
+            throw new KeyNotFoundException("Type was not found, Type: " + type.FullName);
         }
 
         public bool TryGet(Type type, out TValue value)
@@ -87,7 +88,8 @@ namespace VContainer.Internal
             var hashCode = RuntimeHelpers.GetHashCode(type);
             var buckets = table[hashCode & indexFor];
 
-            if (buckets == null) goto END;
+            if (buckets == null)
+                goto END;
 
             if (buckets[0].Type == type)
             {
@@ -108,5 +110,5 @@ namespace VContainer.Internal
             value = default;
             return false;
         }
-   }
+    }
 }

@@ -8,7 +8,9 @@ namespace VContainer.Internal
     internal readonly struct CollectionInstanceProvider : IInstanceProvider, IEnumerable<IRegistration>
     {
         public static bool Match(Type openGenericType) => openGenericType == typeof(IEnumerable<>) ||
-                                                          openGenericType == typeof(IReadOnlyList<>);
+                                                          openGenericType == typeof(IReadOnlyList<>) ||
+                                                          openGenericType == typeof(List<>) ||
+                                                          openGenericType == typeof(IList<>);
 
         public List<IRegistration>.Enumerator GetEnumerator() => registrations.GetEnumerator();
         IEnumerator<IRegistration> IEnumerable<IRegistration>.GetEnumerator() => GetEnumerator();
@@ -31,6 +33,8 @@ namespace VContainer.Internal
             {
                 RuntimeTypeCache.EnumerableTypeOf(elementType),
                 RuntimeTypeCache.ReadOnlyListTypeOf(elementType),
+                RuntimeTypeCache.ListTypeOf(elementType),
+                RuntimeTypeCache.IListTypeOf(elementType),
             };
             registrations = new List<IRegistration>();
         }
@@ -45,7 +49,7 @@ namespace VContainer.Internal
         {
             foreach (var x in registrations)
             {
-                if (x.Lifetime == Lifetime.Singleton && x.ImplementationType == registration.ImplementationType 
+                if (x.Lifetime == Lifetime.Singleton && x.ImplementationType == registration.ImplementationType
                                                      && registration.Condition == null)
                 {
                     throw new VContainerException(registration.ImplementationType, $"Conflict implementation type : {registration}");
@@ -65,6 +69,14 @@ namespace VContainer.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public object SpawnInstance(IObjectResolver resolver)
         {
+            if (registrations.Count == 0)
+            {
+                var listType = typeof(List<>);
+                var constructedListType = listType.MakeGenericType(ElementType);
+                var instance = Activator.CreateInstance(constructedListType);
+                return instance;
+            }
+
             var array = Array.CreateInstance(ElementType, registrations.Count);
             for (var i = 0; i < registrations.Count; i++)
             {

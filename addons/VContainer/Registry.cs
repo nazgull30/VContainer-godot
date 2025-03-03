@@ -17,8 +17,8 @@ namespace VContainer.Internal
             if (buildBuffer == null)
                 buildBuffer = new Dictionary<Type, IRegistration>(128);
             buildBuffer.Clear();
-            
-            
+
+
             buildBuffer.Add(typeof(WhenInjectedInto), new WhenInjectedInto(
                     null,
                     Lifetime.Transient,
@@ -70,6 +70,8 @@ namespace VContainer.Internal
                         {
                             RuntimeTypeCache.EnumerableTypeOf(service),
                             RuntimeTypeCache.ReadOnlyListTypeOf(service),
+                            RuntimeTypeCache.ListTypeOf(service),
+                            RuntimeTypeCache.IListTypeOf(service),
                         }, collection, null);
                     AddCollectionToBuildBuffer(buf, newRegistration);
                 }
@@ -79,7 +81,7 @@ namespace VContainer.Internal
                 if (!injectedWhenInto)
                 {
                     // Overwritten by the later registration
-                    buf[service] = registration;   
+                    buf[service] = registration;
                 }
             }
             else
@@ -88,7 +90,7 @@ namespace VContainer.Internal
                 if (!injectedWhenInto)
                 {
                     // Overwritten by the later registration
-                    buf[service] = registration;   
+                    buf[service] = registration;
                 }
             }
         }
@@ -127,11 +129,38 @@ namespace VContainer.Internal
                 var typeParameters = RuntimeTypeCache.GenericTypeParametersOf(interfaceType);
                 return TryFallbackToSingleElementCollection(interfaceType, openGenericType, typeParameters, out registration) ||
                        TryFallbackToContainerLocal(interfaceType, openGenericType, typeParameters, out registration);
+
             }
             return false;
         }
 
         public bool Exists(Type type) => hashTable.TryGet(type, out _);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         bool TryFallbackToContainerLocal(
             Type closedGenericType,
@@ -175,6 +204,8 @@ namespace VContainer.Internal
                     {
                         RuntimeTypeCache.EnumerableTypeOf(elementType),
                         RuntimeTypeCache.ReadOnlyListTypeOf(elementType),
+                        RuntimeTypeCache.ListTypeOf(elementType),
+                        RuntimeTypeCache.IListTypeOf(elementType),
                     }, collection, null);
                 return true;
             }
@@ -184,11 +215,11 @@ namespace VContainer.Internal
 
         private static bool AddWhenInjectedInto(IDictionary<Type, IRegistration> buf, IRegistration registration)
         {
-            var ifWhenInjectedInto = registration.Condition is {ConditionType: EBindingConditionType.WhenInjectedTo};
+            var ifWhenInjectedInto = registration.Condition is { ConditionType: EBindingConditionType.WhenInjectedTo };
             if (!ifWhenInjectedInto)
                 return false;
 
-            var whenInjectedIntoKey = buf[typeof(WhenInjectedInto)] as  WhenInjectedInto?;
+            var whenInjectedIntoKey = buf[typeof(WhenInjectedInto)] as WhenInjectedInto?;
             whenInjectedIntoKey?.AddRegistration(registration);
 
             return true;
@@ -200,10 +231,10 @@ namespace VContainer.Internal
             {
                 if (hashTable.TryGet(interfaceType, out registration))
                     return registration != null;
-                
+
                 return false;
             }
-            
+
             var whenInjectedIntoKey = hashTable.Get(typeof(WhenInjectedInto)) as WhenInjectedInto?;
             IRegistration res = null;
             whenInjectedIntoKey?.Get(interfaceType, out res, injectToType);
@@ -215,7 +246,7 @@ namespace VContainer.Internal
 
             if (hashTable.TryGet(interfaceType, out registration))
                 return registration != null;
-                
+
             return false;
         }
     }

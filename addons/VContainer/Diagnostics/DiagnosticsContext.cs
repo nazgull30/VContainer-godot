@@ -50,7 +50,15 @@ namespace VContainer.Diagnostics
 
         internal static DiagnosticsInfo FindByRegistration(IRegistration registration)
         {
-            return GetDiagnosticsInfos().FirstOrDefault(x => x.ResolveInfo?.Registration.ImplementationType == registration.ImplementationType);
+            return GetDiagnosticsInfos().FirstOrDefault(x => x.ResolveInfo.Registration == registration);
+        }
+
+        public static void RemoveCollector(string name)
+        {
+            lock (collectors)
+            {
+                collectors.Remove(name);
+            }
         }
     }
 }
