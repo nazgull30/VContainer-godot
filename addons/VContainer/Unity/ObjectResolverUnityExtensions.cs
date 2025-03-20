@@ -8,10 +8,15 @@ namespace VContainer.Unity
         {
             void InjectGameObjectRecursive(Node current)
             {
+                if (!current.GetScript().AsBool())
+                    return;
+
                 resolver.Inject(current);
                 var children = current.GetChildren();
                 foreach (var child in children)
                 {
+                    if (!child.GetScript().AsBool())
+                        continue;
                     resolver.Inject(child);
                     InjectGameObjectRecursive(child);
                 }
@@ -20,7 +25,7 @@ namespace VContainer.Unity
             InjectGameObjectRecursive(gameObject);
         }
 
-        public static T Instantiate<T>(this IObjectResolver resolver, PackedScene prefab)where T: Node
+        public static T Instantiate<T>(this IObjectResolver resolver, PackedScene prefab) where T : Node
         {
             var instance = prefab.Instantiate<T>();
             InjectUnityEngineObject(resolver, instance);
