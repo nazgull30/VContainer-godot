@@ -5,6 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="PdEventBus" Version="1.0.2" />
-    <PackageReference Include="VContainerCore" Version="1.0.0" />
+    <PackageReference Include="VContainerCore" Version="1.0.1" />
   </ItemGroup>
 </Project>
