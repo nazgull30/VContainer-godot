@@ -1,6 +1,6 @@
 using Godot;
 
-namespace VContainer.Unity
+namespace VContainer.Godot
 {
     [GlobalClass]
     [Tool]

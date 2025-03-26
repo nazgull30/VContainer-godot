@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="VContainerSettings" load_steps=2 format=3 uid="uid://douwls285sxtg"]
 
-[ext_resource type="Script" uid="uid://y8tog16pni56" path="res://addons/VContainer/Unity/VContainerSettings.cs" id="1_1i1pn"]
+[ext_resource type="Script" uid="uid://m1x6pm4engd0" path="res://addons/VContainer/VContainerSettings.cs" id="1_3jwaw"]
 
 [resource]
-script = ExtResource("1_1i1pn")
+script = ExtResource("1_3jwaw")
 EnableDiagnostics = false
 DisableScriptModifier = false

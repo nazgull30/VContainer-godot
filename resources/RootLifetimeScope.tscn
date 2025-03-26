@@ -1,13 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpm7rk3j2wwvf"]
+[gd_scene load_steps=3 format=3 uid="uid://cpm7rk3j2wwvf"]
 
-[ext_resource type="Script" uid="uid://bk0ohujg5dedt" path="res://addons/VContainer/Unity/RootLifetimeScope.cs" id="1_3a364"]
-[ext_resource type="PackedScene" uid="uid://bjakg41swvsl4" path="res://scenes/Main.tscn" id="2_a6oh0"]
-[ext_resource type="Resource" uid="uid://douwls285sxtg" path="res://resources/VContainerSettings.tres" id="3_d0mvw"]
+[ext_resource type="Script" uid="uid://bff75v0l6k3pc" path="res://addons/VContainer/RootLifetimeScope.cs" id="1_3a364"]
+[ext_resource type="Resource" uid="uid://douwls285sxtg" path="res://resources/VContainerSettings.tres" id="2_iunia"]
 
 [node name="RootLifetimeScope" type="Node" node_paths=PackedStringArray("_monoInstallers", "autoInjectGameObjects")]
 script = ExtResource("1_3a364")
-_sceneAfter = ExtResource("2_a6oh0")
-_settings = ExtResource("3_d0mvw")
+_settings = ExtResource("2_iunia")
 _scriptableObjectInstallers = Array[Resource]([])
 _monoInstallers = Array[Resource]([])
 autoInjectGameObjects = Array[Resource]([])
